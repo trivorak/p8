@@ -15,6 +15,8 @@ function _init()
 	movey = 0
 	speed = 10
 	rel = false
+	invx = false
+	invy = false
 end
 
 function _update()
@@ -39,6 +41,17 @@ function _update()
 		cy += movey
 		angle = (rnd(10)-5) + angle
 		air -= 1
+		if (invx == true) then 
+			movex = getsinx(speed,angle)
+		else
+			movex = getsinx(speed,angle)*-1
+		end
+		if (invy == true) then
+			movey = getcosy(speed,angle)
+		else 
+			movey = getcosy(speed,angle)*-1
+		end
+
 	end
 
 	if (btn(5)) then cy += 2 end
@@ -66,21 +79,25 @@ function _update()
 	if (cx + air/2 > 128) then
 		cx = cx -((cx+air/2)-128)
 		movex *= -1 
+		updateangle()
 	end
 	
 	if (cx - air/2 < 0) then 
 		cx = cx-((cx-air/2)-0)
 		movex *= -1 
+		updateangle()
 	end
 	
 	if (cy + air/2 > 128) then 
 		cy = cy -((cy+air/2)-128)
 		movey *= -1 
+		updateangle()
 	end
 	
 	if (cy - air/2 < 0) then 
 		cy = cy - ((cy-air/2)-0)
 		movey *= -1 
+		updateangle()
 	end
 end
 
@@ -115,6 +132,9 @@ function getsinx(rad,ang)
 	return rad*(sin(ang/360) *-1)
 end
 
+function updateangle()
+	angle = atan2(movex,movey)*360
+end
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000

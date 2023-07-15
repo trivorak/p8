@@ -11,8 +11,6 @@ popped = false
 cx = 120
 cy = 68
 ballcol = 12
-movex = 0
-movey = 0
 speed = 7
 rel = false
 invx = false
@@ -70,11 +68,19 @@ function TIC()
 	end
 	
 	if btn(4) then
-		cx = cx + mvx * -1 * invxv
-		cy = cy + mvy * -1 * invyv
-		currentrandom = math.random(10)-5 + lastrandom/1.08
-		angle = angle + currentrandom
-		lastrandom = currentrandom
+		if air>0 then
+			cx = cx + mvx * -1 * invxv
+			cy = cy + mvy * -1 * invyv
+			currentrandom = math.random(10)-5 + lastrandom/1.08
+			angle = angle + currentrandom
+			lastrandom = currentrandom
+			if air < 25 then 
+				air = air - 1.0
+			else
+				air = air - .4
+			end
+			else cy = cy + 2
+		end
 	end
 	-- air repair
 	if air < 0 then air = 0 end
@@ -88,7 +94,9 @@ function TIC()
 	-- draw shit
  	cls(bgcolor)
 	circ(cx,cy,air/2,ballcol)
-	circ(lnx,lny,3,ballcol)
+	if air > 10 then
+		circ(lnx,lny,3,ballcol)
+	end
 	--health for display
 	rectb(0,130-air,1,air,hcolor)
 	line(cx,cy,lnx,lny,10)
@@ -106,22 +114,10 @@ end
 function callinverse(input)
 	if input == true then 
 		return false 
-	end
-	if input == false then 
+	elseif input == false then 
 		return true 
 	end
 end
-
--- <TILES>
--- 001:eccccccccc888888caaaaaaaca888888cacccccccacc0ccccacc0ccccacc0ccc
--- 002:ccccceee8888cceeaaaa0cee888a0ceeccca0ccc0cca0c0c0cca0c0c0cca0c0c
--- 003:eccccccccc888888caaaaaaaca888888cacccccccacccccccacc0ccccacc0ccc
--- 004:ccccceee8888cceeaaaa0cee888a0ceeccca0cccccca0c0c0cca0c0c0cca0c0c
--- 017:cacccccccaaaaaaacaaacaaacaaaaccccaaaaaaac8888888cc000cccecccccec
--- 018:ccca00ccaaaa0ccecaaa0ceeaaaa0ceeaaaa0cee8888ccee000cceeecccceeee
--- 019:cacccccccaaaaaaacaaacaaacaaaaccccaaaaaaac8888888cc000cccecccccec
--- 020:ccca00ccaaaa0ccecaaa0ceeaaaa0ceeaaaa0cee8888ccee000cceeecccceeee
--- </TILES>
 
 -- <WAVES>
 -- 000:00000000ffffffff00000000ffffffff

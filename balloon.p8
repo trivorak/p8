@@ -11,7 +11,7 @@ function _init()
 	cx = 128/2
 	cy = 128/2
 	ballcolor = 11
-	speed = 7
+	speed = 10
 	rel = false
 	invx = false
 	invy = false
@@ -99,11 +99,11 @@ end
 
 function _draw()
 	cls(bgcolor)
-	circ(cx,cy,air/2,ballcolor)
+	circfill(cx,cy,air/2,ballcolor)
 	line(cx,cy,lnx,lny,ballcolor)
 	
 	if air > 10 then
-		circ(lnx,lny,3,ballcolor)
+		circfill(lnx,lny,3,ballcolor)
 	end
 	--debug
 	print("angle = " .. angle,0,0,2)

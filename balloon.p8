@@ -72,7 +72,17 @@ function _update()
 		angle = angle + currentrandom
 		lastrandom = currentrandom
 		air -= 0.4
+				
+		if air < 25 then
+			air -= 1.0
+		end
 	end
+	
+	if (btn(5)) then rel=true end
+	
+	if (air>0) and (rel==true) then moveballoon() end
+	
+	if air==0 then rel=false end
 	
 	--mod angle
 	angle = mod(angle,365)
@@ -85,7 +95,6 @@ function _update()
 	mvx = sinx(speed,angle)
 	mvy = cosy(speed,angle)
 	
-
 end
 
 function _draw()
@@ -119,6 +128,20 @@ end
 
 function cosy(rad,ang)
 	return rad*cos(ang/365)
+end
+
+function moveballoon()
+	cx = cx + mvx * -1 * invxv
+	cy = cy + mvy * -1 * invyv
+	currentrandom = rnd(10)-5 + lastrandom/1.08
+	angle = angle + currentrandom
+	lastrandom = currentrandom
+	air -= 0.4
+				
+	if air < 25 then
+		air -= 1.0
+	end
+		
 end
 
 __gfx__

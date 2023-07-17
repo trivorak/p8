@@ -3,14 +3,14 @@ version 41
 __lua__
 
 function _init()
-	bgcolor = 1
+	bgcolor = 0
 	air = 1
 	hcolor = 5
 	angle = 0
 	popped = false
 	cx = 128/2
 	cy = 128/2
-	ballcolor = 11
+	ballcolor = 8
 	speed = 10
 	rel = false
 	invx = false
@@ -57,11 +57,11 @@ function _update()
 		angle += 5 
 	end
 	
-	if (btn(2)) and (popped == false) then 
+	if (btn(2)) and (popped == false) and (rel==false) then 
 		air += 2 
 	end
 	
-	if (btn(3)) and (popped == false) then
+	if (btn(3)) and (popped == false) and (rel==false) then
 		air -= 2 
 	end
 	
@@ -105,9 +105,7 @@ function _draw()
 	if air > 10 then
 		circfill(lnx,lny,3,ballcolor)
 	end
-	--debug
-	print("angle = " .. angle,0,0,2)
-	print("air = " .. air,0,6,2)
+
 end
 
 function callinverse(input)
@@ -136,10 +134,10 @@ function moveballoon()
 	currentrandom = rnd(10)-5 + lastrandom/1.08
 	angle = angle + currentrandom
 	lastrandom = currentrandom
-	air -= 0.4
+	air -= 0.5
 				
 	if air < 25 then
-		air -= 1.0
+		air -= 1.25
 	end
 		
 end

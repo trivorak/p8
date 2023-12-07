@@ -65,17 +65,20 @@ function _update()
 		air -= 2 
 	end
 	
-	if (btn(4)) then
-		cx = cx + mvx * -1 * invxv
-		cy = cy + mvy * -1 * invyv
-		currentrandom = rnd(10)-5 + lastrandom/1.08
-		angle = angle + currentrandom
-		lastrandom = currentrandom
-		air -= 0.4
-				
-		if air < 25 then
-			air -= 1.0
+	if (btnp(4)) then ballcolor += 1
+		if ballcolor%16 == bgcolor then
+			bgcolor = flr(rnd(16))
 		end
+	-- cx = cx + mvx * -1 * invxv
+	--	cy = cy + mvy * -1 * invyv
+	--	currentrandom = rnd(10)-5 + lastrandom/1.08
+	--	angle = angle + currentrandom
+	--	lastrandom = currentrandom
+	--	air -= 0.4
+				
+	--	if air < 25 then
+	--		air -= 1.0
+	--	end
 	end
 	
 	if (btn(5)) then rel=true end

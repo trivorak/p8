@@ -66,7 +66,7 @@ function _update()
 	end
 	
 	if (btnp(4)) then ballcolor += 1
-		if ballcolor%16 == bgcolor then
+		while ballcolor%16 == bgcolor do
 			bgcolor = flr(rnd(16))
 		end
 	-- cx = cx + mvx * -1 * invxv

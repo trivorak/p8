@@ -21,8 +21,8 @@ function _init()
 	invyv = 1
 	lastrandom = 0
 	currentrandom = 0
-	gravity = 2
 	minair = 10
+	colorspeed = .75
 end 
 
 function _update()
@@ -36,13 +36,14 @@ function _update()
 		cx = air/2-1
 	end
 	if (cy+air/2>127) then
+		testvar = cy
 		cy = 127 - air/2
 		if (air > minair) and (rel == true) then 
 			invy = callinverse(invy)
 		end
 	end
 	if (cy - air/2<0) then
-		cy = air/2 + 1
+		testvar = cy
 		if(air > minair) and (rel == true) then
 			invy = callinverse(invy)
 		end
@@ -53,9 +54,6 @@ function _update()
 	if invx == false then invxv = 1 end
 	if invy == true then invyv = -1 end
 	if invy == false then invyv = 1 end
-	
-	
--- controls
 
 	--mod angle
 	angle = mod(angle,365)
@@ -67,6 +65,8 @@ function _update()
 	mvx = sinx(speed,angle)
 	mvy = cosy(speed,angle)
 	
+	-- controls
+
 	if (btn(0)) then 
 		angle -= 5
 	end
@@ -83,10 +83,7 @@ function _update()
 		air -= 2 
 	end
 	
-	if (btnp(4)) then ballcolor += 1
-		while ballcolor%16 == bgcolor do
-			bgcolor = flr(rnd(16))
-		end
+	if (btnp(4)) then changecolorflag = true
 	end
 	
 	if (btn(5)) then rel=true end
@@ -95,11 +92,11 @@ function _update()
 	
 	if air==minair then rel=false end
 
-	if (rel==false) then 
-		cy += gravity 
+	if (rel==false) and (cy+air/2<126) then 
+		cy += speed * .5
 	end
 
-	if (rel==false) and (air == minair) and (cy+air/2 <= 127) then 
+	if (rel==false) and (air == minair) and (cy+air/2 <= 126) then 
 		cx = cx + mvx * -.75 * invxv
 	end
 	
@@ -111,12 +108,17 @@ end
 function _draw()
 	cls(bgcolor)
 	circfill(cx,cy,air/2,ballcolor)
-	line(cx,cy,lnx,lny,ballcolor)
 	
 	if air > 10 then
 		circfill(lnx,lny,3,ballcolor)
 	end
-
+	
+	if (changecolorflag == true) and (rel == true) then changeballcolor(colorspeed) end
+	
+	if (changecolorflag == true) and (rel == false) then 
+		changeballcolor(1) 
+		changecolorflag = false
+	end
 end
 
 function callinverse(input)
@@ -151,6 +153,13 @@ function moveballoon()
 		air -= 1.25
 	end
 		
+end
+
+function changeballcolor(input)
+	ballcolor += input
+	while flr(ballcolor)%16 == bgcolor do
+		bgcolor = flr(rnd(16))
+	end
 end
 
 __gfx__

@@ -21,6 +21,8 @@ function _init()
 	invyv = 1
 	lastrandom = 0
 	currentrandom = 0
+	gravity = 2
+	minair = 10
 end 
 
 function _update()
@@ -34,12 +36,17 @@ function _update()
 		cx = air/2-1
 	end
 	if (cy+air/2>127) then
-		invy = callinverse(invy)
 		cy = 127 - air/2
+		if (air > minair) and (rel == true) then 
+			invy = callinverse(invy)
+		end
 	end
 	if (cy - air/2<0) then
-		invy = callinverse(invy)
 		cy = air/2 + 1
+		if(air > minair) and (rel == true) then
+			invy = callinverse(invy)
+		end
+	
 	end
 	
 	if invx == true then invxv = -1 end
@@ -49,6 +56,17 @@ function _update()
 	
 	
 -- controls
+
+	--mod angle
+	angle = mod(angle,365)
+	--clamp air
+	if air >= 100 then air = 100 end
+	if air <= minair then air = minair end
+	
+
+	mvx = sinx(speed,angle)
+	mvy = cosy(speed,angle)
+	
 	if (btn(0)) then 
 		angle -= 5
 	end
@@ -69,34 +87,24 @@ function _update()
 		while ballcolor%16 == bgcolor do
 			bgcolor = flr(rnd(16))
 		end
-	-- cx = cx + mvx * -1 * invxv
-	--	cy = cy + mvy * -1 * invyv
-	--	currentrandom = rnd(10)-5 + lastrandom/1.08
-	--	angle = angle + currentrandom
-	--	lastrandom = currentrandom
-	--	air -= 0.4
-				
-	--	if air < 25 then
-	--		air -= 1.0
-	--	end
 	end
 	
 	if (btn(5)) then rel=true end
 	
-	if (air>0) and (rel==true) then moveballoon() end
+	if (air>minair) and (rel==true) then moveballoon() end
 	
-	if air==0 then rel=false end
-	
-	--mod angle
-	angle = mod(angle,365)
-	--clamp air
-	if air >= 100 then air = 100 end
-	if air <= 0 then air = 0 end
+	if air==minair then rel=false end
+
+	if (rel==false) then 
+		cy += gravity 
+	end
+
+	if (rel==false) and (air == minair) and (cy+air/2 <= 127) then 
+		cx = cx + mvx * -.75 * invxv
+	end
 	
 	lnx = sinx(air/2,angle)*invxv+cx
 	lny = cosy(air/2,angle)*invyv+cy
-	mvx = sinx(speed,angle)
-	mvy = cosy(speed,angle)
 	
 end
 
